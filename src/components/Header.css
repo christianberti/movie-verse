@@ -1,0 +1,35 @@
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #000;
+    color: #eee;
+}
+
+.header-container a {
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.header-container a:visited {
+    color: #eee;
+}
+
+.header-container a:hover {
+    color: #8683e6;
+}
+
+.header-container input {
+    border-radius: 6px;
+    border-style: none;
+    padding: 5px;
+}
+
+@media (max-width: 700px) {
+  .header-container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+}
