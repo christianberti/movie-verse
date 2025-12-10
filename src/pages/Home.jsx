@@ -1,35 +1,81 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom"; // <--- Importamos esto
 import tmdbApi from "../api/tmdb";
 import MovieCard from "../components/MovieCard";
-import './Home.css'
+import "./Home.css";
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const [searchParams] = useSearchParams();
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const query = searchParams.get("query");
+  
 
   useEffect(() => {
-    const getMovies = async () => {
-      try {
-        // 1. USAMOS la instancia para pedir datos a una ruta específica
-        const respuesta = await tmdbApi.get("/movie/popular");
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
-        // 2. Guardamos SOLO los resultados (la lista de pelis)
-        // Axios devuelve todo en .data, y TMDB pone la lista en .results
-        setMovies(respuesta.data.results);
+    const fetchMovies = async () => {
+      try {
+        let response;
+        if (query) {
+          response = await tmdbApi.get("/search/movie", {
+            params: { query: query, page: page },
+          });
+        } else {
+          response = await tmdbApi.get("/movie/popular", {
+            params: { page: page },
+          });
+        }
+        setMovies(response.data.results);
+        setTotalPages(response.data.total_pages);
+        setLoading(false);
       } catch (error) {
-        console.error("Error cargando películas:", error);
+        console.error("Error:", error);
       }
     };
-    getMovies();
-  }, []);
+
+    fetchMovies();
+  }, [query, page]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [query]);
+
+  const handleNext = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
+  const handlePrev = () => {
+    setPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  if (loading)
+    return (
+      <div className="spinner-container">
+        <div className="spinner"></div>;
+      </div>
+    );
 
   return (
-    <>
+    <div className="home-container">
+      <h1>{query ? `Resultados para: ${query}` : "Películas Populares"}</h1>
+
       <div className="grilla-peliculas">
+        
         {movies.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}
       </div>
-    </>
+      <div className="pagination">
+        <button disabled={page === 1} onClick={handlePrev}>
+          Anterior
+        </button>
+        <button disabled={page === totalPages} onClick={handleNext}>Siguiente</button>
+      </div>
+    </div>
   );
 };
 
