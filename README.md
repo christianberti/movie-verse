@@ -1,16 +1,10 @@
-# React + Vite
+MovieVerse - React Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación de exploración de películas que consume la API de TMDB. Desarrollada para demostrar el manejo de flujos de datos asíncronos y gestión de estado global.
 
-Currently, two official plugins are available:
+Tecnologías: React, Vite, Axios, React Router v6, Context API, CSS3 (Grid/Flexbox). Features:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Búsqueda en tiempo real con persistencia en URL.
+- Sistema de Favoritos persistente (LocalStorage).
+- Paginación sincronizada con la API.
+- Diseño Responsive y UI moderna.
