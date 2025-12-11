@@ -55,4 +55,9 @@ h1 {
   pointer-events: none;
 }
 
-
+@media (max-width: 700px) {
+  .pagination {
+    padding: 0;
+    max-width: 100%;
+  }
+}
