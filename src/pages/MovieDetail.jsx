@@ -26,9 +26,10 @@ const MovieDetail = () => {
       try {
         const respuesta = await tmdbApi.get(`/movie/${id}`);
         setMovie(respuesta.data);
-        setLoading(false);
       } catch (error) {
         console.error("Error al cargar la pelicula", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -38,9 +39,13 @@ const MovieDetail = () => {
   if (loading)
     return (
       <div className="spinner-container">
-        <div className="spinner"></div>;
+        <div className="spinner"></div>
       </div>
     );
+
+  if (!movie) {
+    return <div style={{ color: "white", textAlign: "center", marginTop: "50px" }}>No se pudo cargar la información de la película.</div>;
+  }
 
   const isFav = esFavorito(movie.id);
 

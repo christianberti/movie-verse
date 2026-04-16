@@ -19,6 +19,7 @@ const Home = () => {
 
     const fetchMovies = async () => {
       try {
+        setLoading(true);
         let response;
         if (query) {
           response = await tmdbApi.get("/search/movie", {
@@ -29,11 +30,12 @@ const Home = () => {
             params: { page: page },
           });
         }
-        setMovies(response.data.results);
-        setTotalPages(response.data.total_pages);
-        setLoading(false);
+        setMovies(response.data.results || []);
+        setTotalPages(response.data.total_pages || 1);
       } catch (error) {
         console.error("Error:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -52,22 +54,21 @@ const Home = () => {
     setPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
-  if (loading)
-    return (
-      <div className="spinner-container">
-        <div className="spinner"></div>;
-      </div>
-    );
-
   return (
     <div className="home-container">
       <h1>{query ? `Resultados para: ${query}` : "Películas Populares"}</h1>
 
       <div className="grilla-peliculas">
-        
-        {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
+        {loading
+          ? Array.from({ length: 20 }).map((_, index) => (
+              <div key={index} className="card-container skeleton-card">
+                <div className="skeleton-poster"></div>
+                <div className="skeleton-title"></div>
+              </div>
+            ))
+          : movies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
       </div>
       <div className="pagination">
         <button disabled={page === 1} onClick={handlePrev}>
